@@ -108,6 +108,16 @@ class Publisher
   /// \param csvFileName The filename of a new file
   bool setCsvFile(std::string csvFileName);
 
+  /// \brief              Set a .ply file where the landmarks will be saved to.
+  /// \param csvFile      The file
+  bool setLandmarksPlyFile(std::fstream& csvFile);
+  /// \brief              Set a .ply file where the landmarks will be saved to.
+  /// \param csvFileName  The filename of a new file
+  bool setLandmarksPlyFile(std::string& csvFileName);
+  /// \brief              Set a .ply file where the landmarks will be saved to.
+  /// \param csvFileName  The filename of a new file
+  bool setLandmarksPlyFile(std::string csvFileName);
+
   /// \brief              Set a CVS file where the landmarks will be saved to.
   /// \param csvFile      The file
   bool setLandmarksCsvFile(std::fstream& csvFile);
@@ -314,6 +324,8 @@ class Publisher
   bool writeCsvDescription();
   /// @brief Write CSV header for landmarks file.
   bool writeLandmarksCsvDescription();
+  /// @brief Write PLY header for landmarks file.
+  bool writeLandmarksPlyDescription();
   /// @brief Write CSV header for landmarks file.
   bool writeDescriptorsCsvDescription();
 
@@ -362,6 +374,7 @@ class Publisher
 
   std::shared_ptr<std::fstream> csvFile_; ///< CSV file to save state in.
   std::shared_ptr<std::fstream> csvLandmarksFile_;  ///< CSV file to save landmarks in.
+  std::shared_ptr<std::fstream> plyLandmarksFile_;  ///< PLY file to save landmarks in.
   std::shared_ptr<std::fstream> csvDescriptorsFile_;  ///< CSV file to save descriptors in.
 
 };

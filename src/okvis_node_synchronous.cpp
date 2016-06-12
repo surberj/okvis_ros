@@ -122,6 +122,7 @@ int main(int argc, char **argv) {
   // setup files to be written
   publisher.setCsvFile(path + "/okvis_estimator_output.csv");
   publisher.setLandmarksCsvFile(path + "/okvis_estimator_landmarks.csv");
+  publisher.setLandmarksPlyFile(path + "/okvis_estimator_landmarks.ply");
   publisher.setDescriptorsCsvFile(path + "/okvis_estimator_descriptors.csv");
   okvis_estimator.setImuCsvFile(path + "/imu0_data.csv");
   for (size_t i = 0; i < numCameras; ++i) {

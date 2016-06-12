@@ -75,6 +75,9 @@ Publisher::~Publisher()
     }*/
     csvLandmarksFile_->close();
   }
+  if (plyLandmarksFile_) {
+    plyLandmarksFile_->close();
+  }
   if (csvDescriptorsFile_)
     csvDescriptorsFile_->close();
   if (csvFile_)
@@ -146,6 +149,27 @@ bool Publisher::writeLandmarksCsvDescription()
   return true;
 }
 
+// Write PLY header for landmarks file.
+bool Publisher::writeLandmarksPlyDescription()
+{
+  if (!plyLandmarksFile_)
+    return false;
+  if (!plyLandmarksFile_->good())
+    return false;
+  *plyLandmarksFile_ << "ply"
+      << '\n' << "format ascii 1.0"
+      << '\n' << "element vertex 1000000"
+      << '\n' << "property float x"
+      << '\n' << "property float y"
+      << '\n' << "property float z"
+      << '\n' << "property uchar red"
+      << '\n' << "property uchar green"
+      << '\n' << "property uchar blue"
+      << '\n' << "end_header" << std::endl;
+
+  return true;
+}
+
 // Write CSV header for landmarks file.
 bool Publisher::writeDescriptorsCsvDescription()
 {
@@ -207,6 +231,32 @@ bool Publisher::setLandmarksCsvFile(std::string csvFileName)
       new std::fstream(csvFileName.c_str(), std::ios_base::out));
   writeLandmarksCsvDescription();
   return csvLandmarksFile_->good();
+}
+// Set a CVS file where the landmarks will be saved to.
+bool Publisher::setLandmarksPlyFile(std::fstream& csvFile)
+{
+  if (plyLandmarksFile_) {
+    plyLandmarksFile_->close();
+  }
+  plyLandmarksFile_.reset(&csvFile);
+  writeLandmarksPlyDescription();
+  return plyLandmarksFile_->good();
+}
+// Set a CVS file where the landmarks will be saved to.
+bool Publisher::setLandmarksPlyFile(std::string& csvFileName)
+{
+  plyLandmarksFile_.reset(
+      new std::fstream(csvFileName.c_str(), std::ios_base::out));
+  writeLandmarksPlyDescription();
+  return plyLandmarksFile_->good();
+}
+// Set a CVS file where the landmarks will be saved to.
+bool Publisher::setLandmarksPlyFile(std::string csvFileName)
+{
+  plyLandmarksFile_.reset(
+      new std::fstream(csvFileName.c_str(), std::ios_base::out));
+  writeLandmarksPlyDescription();
+  return plyLandmarksFile_->good();
 }
 
 // Set a CVS file where the descriptors will be saved to.
@@ -750,6 +800,27 @@ void Publisher::csvSaveLandmarksAsCallback(
             << ", " << landmark[1] << ", " << landmark[2] << ", " << landmark[3]
             << ", " << transferredLandmarks.at(l).quality
             << ", " << transferredLandmarks.at(l).distance
+            << std::endl;
+      }
+    }
+  }
+  if (plyLandmarksFile_) {
+    if (plyLandmarksFile_->good()) {
+      for (size_t l = 0; l < transferredLandmarks.size(); ++l) {
+        // check infinity
+        if (fabs((double) (transferredLandmarks[l].point[3])) < 1.0e-10)
+          continue;
+        // check quality
+        if (transferredLandmarks[l].quality < 0.02)
+          continue;
+        Eigen::Vector4d landmark = transferredLandmarks.at(l).point;
+        double x = landmark[0]/landmark[3];
+        double y = landmark[1]/landmark[3];
+        double z = landmark[2]/landmark[3];
+        *plyLandmarksFile_ << x << " " << y << " " << z << " "
+            << " " << (int)transferredLandmarks.at(l).intensity
+            << " " << (int)transferredLandmarks.at(l).intensity
+            << " " << (int)transferredLandmarks.at(l).intensity
             << std::endl;
       }
     }
