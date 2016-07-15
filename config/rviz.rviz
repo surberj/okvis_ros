@@ -111,8 +111,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.5082
-        Min Value: -1.30505
+        Max Value: -12.603
+        Min Value: -16.9026
         Value: true
       Axis: Z
       Channel Name: z
@@ -161,7 +161,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 95.2471
+      Distance: 147.715
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
@@ -176,7 +176,7 @@ Visualization Manager:
       Pitch: 1.5698
       Target Frame: fcu
       Value: Orbit (rviz)
-      Yaw: 2.14387
+      Yaw: 1.48887
     Saved: ~
 Window Geometry:
   Displays:
@@ -196,5 +196,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 758
-  X: 80
-  Y: 24
+  X: 490
+  Y: 34
